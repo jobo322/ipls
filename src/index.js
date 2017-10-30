@@ -3,10 +3,10 @@ var {PLS} = require('ml-pls');
 
 function intervalPLS(intervalsList, dataSet, dataClass, options = {}) {
     //should has a checkArguments function
-    dataSet = new Matrix(dataSet);
-    var nRows = dataSet.rows;
-    var nCols = dataSet.columns;
-    dataSet = dataSet.transpose();
+    if (!options.traposedDataset) {
+        dataSet = new Matrix(dataSet);
+        dataSet = dataSet.transpose();
+    }
     var results = new Array(intervalsList.length);
     let counter = 0;
     for (let intervals of intervalsList) {
@@ -36,14 +36,14 @@ function _getSubDataSet(intervals, dataSet) {
             subDataset.push(dataSet[j]);
         }
     }
-    result = new Matrix(subDataset);
+    var result = new Matrix(subDataset);
     return result.transpose();
 }
 
 function _computeQ2(realY, predictedY) {
     realY = Matrix.checkMatrix(realY);
     predictedY = Matrix.checkMatrix(predictedY);
-    let meansY = _mean(realY)
+    let meansY = _mean(realY);
     let press = predictedY.map((row, rowIndex) => {
         return row.map((element, colIndex) => {
             return Math.pow(realY[rowIndex][colIndex] - element, 2);
@@ -53,7 +53,7 @@ function _computeQ2(realY, predictedY) {
     let tss = predictedY.map((row) => {
         return row.map((element, colIndex) => {
             return Math.pow(element - meansY[colIndex], 2);
-        })
+        });
     });
 
     press = Matrix.checkMatrix(press).sum();
@@ -62,10 +62,10 @@ function _computeQ2(realY, predictedY) {
     return 1 - press / tss;
 }
 
-function _mean(matrix, dimension) {
-    var rows = matrix.length,
-        cols = matrix[0].length,
-        theMean, N, i, j;
+function _mean(matrix) {
+    var rows = matrix.length;
+    var cols = matrix[0].length;
+    var theMean, N, i, j;
 
     theMean = new Array(cols);
     N = rows;

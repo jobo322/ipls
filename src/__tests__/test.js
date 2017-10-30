@@ -1,5 +1,5 @@
 var intervalPLS = require('../index');
-var rand = require('generate-dataset');
+var generateDataset = require('generate-dataset');
 var options = {
     keepDataClass: true,
     keepCompositionMatrix: false,
@@ -15,7 +15,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 9.4,
-                            standardDesviation: 0.1
+                            standardDeviation: 0.1
                         }
                     }
                 },
@@ -25,7 +25,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 9.4,
-                            standardDesviation: 0.1
+                            standardDeviation: 0.1
                         }
                     }
                 },
@@ -35,7 +35,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 9.4,
-                            standardDesviation: 0.1
+                            standardDeviation: 0.1
                         }
                     }
                 }
@@ -50,7 +50,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 9.4,
-                            standardDesviation: 0.1
+                            standardDeviation: 0.1
                         }
                     }
                 },
@@ -60,7 +60,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 10.3,
-                            standardDesviation: 0.15
+                            standardDeviation: 0.15
                         }
                     }
                 },
@@ -70,7 +70,7 @@ var options = {
                         name: 'normal',
                         parameters: {
                             mean: 9.4,
-                            standardDesviation: 0.1
+                            standardDeviation: 0.1
                         }
                     }
                 }
@@ -116,9 +116,9 @@ for (let i of pureElements) {
 }
 describe('dataset generated from a small matrix of pureElements', () => {
     it('should has a standar desviation closest to provided', () => {
-        let result = rand(pureElements, options);
+        let result = generateDataset(pureElements, options);
         let iplsResult = intervalPLS(intervals, result.dataset, result.dataClass);
-        let maxIndex = 0
+        let maxIndex = 0;
         for (let i = 1; i < iplsResult.length; i++) {
             if (iplsResult[maxIndex] < iplsResult[i]) maxIndex = i;
         }
